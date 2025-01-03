@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     checkout:
       - name: Checkout
-        uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4.1.0
     steps:
       - name: Configuring
       - run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
