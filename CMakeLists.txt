@@ -16,7 +16,7 @@ enable_testing()
 
 write_basic_package_version_file(${CMAKE_BINARY_DIR}/SampleVersion.cmake COMPATIBILITY SameMinorVersion)
 install(TARGETS sample RUNTIME CONFIGURATIONS Release MinSizeRel)
-install(FILES ${CMAKE_BINARY_DIR}/SampleVersion.cmake CONFIGURATIONS Release MinSizeRel DESTINATION ${CMAKE_INSTALL_LIBDIR}/sample/cmake)
+#install(FILES ${CMAKE_BINARY_DIR}/SampleVersion.cmake CONFIGURATIONS Release MinSizeRel DESTINATION ${CMAKE_INSTALL_LIBDIR}/sample/cmake)
 
 set(CPACK_PACKAGE_VENDOR "Brian Salehi <briansalehi@proton.me>")
 set(CPACK_PACKAGE_CONTACT "briansalehi@proton.me")
