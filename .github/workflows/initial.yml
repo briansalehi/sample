@@ -15,5 +15,9 @@ jobs:
         run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
       - name: Build
         run: cmake --build build
-      - name: Pack
-        run: cpack -G 'ZIP;RPM;DEB' --config build/CPackConfig.cmake
+      - name: Zip Package
+        run: cpack -G ZIP --config build/CPackConfig.cmake
+      - name: Debian Package
+        run: cpack -G DEB --config build/CPackConfig.cmake
+      - name: RPM Package
+        run: cpack -G RPM --config build/CPackConfig.cmake
