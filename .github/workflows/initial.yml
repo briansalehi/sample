@@ -7,3 +7,8 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    steps:
+      - run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
+      - run: cmake --build build
+      - run: cpack -G ZIP --config build/CPackConfig.cmake
+      - run: zip --show-files build/Packages/*.zip
