@@ -16,6 +16,4 @@ jobs:
       - name: Build
         run: cmake --build build
       - name: Pack
-        run: cpack -G ZIP --config build/CPackConfig.cmake
-      - name: Verify
-        run: zip --show-files build/Packages/*.zip
+        run: cpack -G 'ZIP;RPM;DEB' --config build/CPackConfig.cmake
