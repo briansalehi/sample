@@ -2,17 +2,19 @@ name: Initial
 on:
   push:
     branch:
-      - 'release'
+      - release
 jobs:
-  checkout:
-    name: Checkout
-    uses: actions/checkout@v4.1.0
   release:
     name: Release
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Configure
-      - run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
-      - run: cmake --build build
-      - run: cpack -G ZIP --config build/CPackConfig.cmake
-      - run: zip --show-files build/Packages/*.zip
+        run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build
+      - name: Pack
+        run: cpack -G ZIP --config build/CPackConfig.cmake
+      - name: Verify
+        run: zip --show-files build/Packages/*.zip
