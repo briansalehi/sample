@@ -1,7 +1,7 @@
 name: Initial
 on:
   push:
-    branch:
+    branches:
       - release
 jobs:
   release:
@@ -10,17 +10,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Container
-        uses: docker://gcc:14.2
-        with:
-          entrypoint: "/bin/bash -c "
-          args: |
-            apt update && apt install --yes --no-install-recommends cmake && apt clean && cmake -S . -B build -D CMAKE_BUILD_TYPE=Release && cmake --build build && cpack -G ZIP --config build/CPackConfig.cmake && zip --show-files build/Packages/*.zip
-            #- name: Configure
-            #  run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
-            #- name: Build
-            #  run: cmake --build build
-            #- name: Pack
-            #  run: cpack -G ZIP --config build/CPackConfig.cmake
-            #- name: Verify
-            #  run: zip --show-files build/Packages/*.zip
+      - name: Configure
+        run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build
+      - name: Pack
+        run: cpack -G ZIP --config build/CPackConfig.cmake
+      - name: Verify
+        run: zip --show-files build/Packages/*.zip
