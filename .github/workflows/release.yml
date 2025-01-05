@@ -23,17 +23,17 @@ jobs:
         run: cpack -G DEB --config build/CPackConfig.cmake
       - name: RPM Package
         run: cpack -G RPM --config build/CPackConfig.cmake
-        #      - name: Create Release
-        #        id: create_release
-        #        uses: actions/create-release@v1
-        #        with:
-        #          tag_name: ${{ github.refname }}
-        #          release_name: "Release ${{ github.refname }}"
-        #          body: "Release notes for ${{ github.refname }}"
-        #          draft: false
-        #          prerelease: false
-        #        env:
-        #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.refname }}
+          release_name: "Release ${{ github.refname }}"
+          body: "Release notes for ${{ github.refname }}"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         #      -name: Upload Assets
         #        uses: actions/upload-release-asset@v1
         #        with:
