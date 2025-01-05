@@ -38,7 +38,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       -name: Upload Assets
         uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./Sample.zip
-          asset_name: Sample.zip
+        #        with:
+        #          upload_url: ${{ steps.create_release.outputs.upload_url }}
+        #          asset_path: ./Sample.zip
+        #          asset_name: Sample.zip
