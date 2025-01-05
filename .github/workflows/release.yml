@@ -38,7 +38,7 @@ jobs:
           asset_path: ./Sample.zip
           asset_name: Sample.zip
           asset_content_type: application/zip
-          permissions:
-            packages: write
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+      - name: Verify Package
+        run: zip --show-files build/Packages/Sample.zip
