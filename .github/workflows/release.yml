@@ -20,6 +20,8 @@ jobs:
         run: cpack -G DEB --config build/CPackConfig.cmake
       - name: RPM Package
         run: cpack -G RPM --config build/CPackConfig.cmake
+      - name: PWD
+        run: pwd
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -35,7 +37,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: Packages/Sample.zip
+          asset_path: /home/runner/work/sample/sample/build/Packages/Sample.zip
           asset_name: Sample.zip
           asset_content_type: application/zip
         env:
