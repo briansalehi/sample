@@ -33,14 +33,30 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
-      - name: Upload Assets
+      - name: Upload ZIP
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /home/runner/work/sample/sample/build/Packages/Sample.zip
+          asset_path: build/Packages/Sample.zip
           asset_name: Sample.zip
           asset_content_type: application/zip
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
-      - name: Verify Package
-        run: zip --show-files build/Packages/Sample.zip
+      - name: Upload DEB
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/Packages/Sample.deb
+          asset_name: Sample.deb
+          asset_content_type: application/deb
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+      - name: Upload RPM
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/Packages/Sample.rpm
+          asset_name: Sample.rpm
+          asset_content_type: application/rpm
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
