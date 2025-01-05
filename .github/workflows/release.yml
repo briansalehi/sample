@@ -23,6 +23,8 @@ jobs:
         run: cpack -G DEB --config build/CPackConfig.cmake
       - name: RPM Package
         run: cpack -G RPM --config build/CPackConfig.cmake
+      - name: Check Tag
+        run: echo ${{ github.refname }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
