@@ -3,9 +3,6 @@ on:
   push:
     tags:
       - v*
-    branches:
-      - main
-      - release
 jobs:
   release:
     name: Release
