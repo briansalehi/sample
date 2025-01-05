@@ -20,6 +20,6 @@ install(TARGETS sample RUNTIME CONFIGURATIONS Release MinSizeRel)
 
 set(CPACK_PACKAGE_VENDOR "Brian Salehi <briansalehi@proton.me>")
 set(CPACK_PACKAGE_CONTACT "briansalehi@proton.me")
-set(CPACK_PACKAGE_DESCRIPTION "Sample Package for Personal Experiments")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Sample Package for Personal Experiments")
 set(CPACK_PACKAGE_DIRECTORY ${CMAKE_BINARY_DIR}/Packages)
 include(CPack)
