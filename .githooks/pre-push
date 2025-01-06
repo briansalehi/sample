@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+git_version="$(git describe --tags --abbrev=0 | tr -d 'v')"
+cmake_version="$(sed -nE '/^project(.*)$/s/.*VERSION ([^ ]+).*/\1/p' CMakeLists.txt)"
+
+if [ "$git_version" != "$cmake_version" ]
+then
+    echo "Tagged version $git_version and project version $cmake_version are out of sync!"
+    exit 1
+fi
