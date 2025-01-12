@@ -4,18 +4,14 @@ on:
     tags:
       - v*
 jobs:
-  checkout:
-    name: Checkout
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
   build:
     name: Build
     runs-on: ubuntu-24.04
-    needs: checkout
     steps:
+      - name:Checkout
+        uses: actions/checkout@v4
       - name: Configure
-        run: cmake -S sample -B build -D CMAKE_BUILD_TYPE=Release
+        run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
       - name: Build
         run: cmake --build build
   package:
