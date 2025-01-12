@@ -14,10 +14,19 @@ jobs:
         run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
       - name: Build
         run: cmake --build build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: artifacts
+          path: build/
+          retention-days: 1
   package:
     runs-on: ubuntu-24.04
     needs: build
     steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: artifacts
+          path: build/
       - name: Zip Package
         run: cpack -G ZIP --config build/CPackConfig.cmake
       - name: Debian Package
@@ -28,6 +37,10 @@ jobs:
     runs-on: ubuntu-24.04
     needs: package
     steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: artifacts
+          path: build/
       - name: Verify Package Content
         run: |
           zip --show-files build/Packages/*.zip
@@ -50,6 +63,10 @@ jobs:
     runs-on: ubuntu-24.04
     needs: release
     steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: artifacts
+          path: build/
       - name: Upload ZIP Package
         uses: actions/upload-release-asset@v1
         with:
@@ -77,3 +94,10 @@ jobs:
           asset_content_type: application/rpm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  cleanup:
+    runs-on: ubuntu-24.04
+    needs: upload
+    steps:
+      - uses: geekyeggo/delete-artifact@v5
+        with:
+          name: artifacts

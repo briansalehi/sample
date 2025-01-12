@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.30)
-project(Sample VERSION 0.20 LANGUAGES CXX DESCRIPTION "Sample Project")
+project(Sample VERSION 0.21 LANGUAGES CXX DESCRIPTION "Sample Project")
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
