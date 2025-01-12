@@ -15,7 +15,7 @@ jobs:
     needs: checkout
     steps:
       - name: Configure
-        run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
+        run: cmake -S sample -B build -D CMAKE_BUILD_TYPE=Release
       - name: Build
         run: cmake --build build
   package:
