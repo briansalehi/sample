@@ -14,53 +14,14 @@ jobs:
         run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
       - name: Build
         run: cmake --build build
-      - uses: actions/upload-artifact@v4
-        with:
-          name: artifacts
-          path: sample/
-          retention-days: 1
-      - uses: actions/upload-artifact@v4
-        with:
-          name: artifacts
-          path: build/
-          retention-days: 1
-  package:
-    runs-on: ubuntu-24.04
-    needs: build
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: artifacts
-          path: build/
-      - uses: actions/download-artifact@v4
-        with:
-          name: artifacts
-          path: sample/
       - name: Zip Package
         run: cpack -G ZIP --config build/CPackConfig.cmake
       - name: Debian Package
         run: cpack -G DEB --config build/CPackConfig.cmake
       - name: RPM Package
         run: cpack -G RPM --config build/CPackConfig.cmake
-  verify:
-    runs-on: ubuntu-24.04
-    needs: package
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: artifacts
-          path: sample/
-      - uses: actions/download-artifact@v4
-        with:
-          name: artifacts
-          path: build/
       - name: Verify Package Content
-        run: |
-          zip --show-files build/Packages/*.zip
-  release:
-    runs-on: ubuntu-24.04
-    needs: package
-    steps:
+        run: zip --show-files build/Packages/*.zip
       - name: Create Release
         id: create-release
         uses: actions/create-release@v1
@@ -72,18 +33,6 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  upload:
-    runs-on: ubuntu-24.04
-    needs: release
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: artifacts
-          path: sample/
-      - uses: actions/download-artifact@v4
-        with:
-          name: artifacts
-          path: build/
       - name: Upload ZIP Package
         uses: actions/upload-release-asset@v1
         with:
@@ -111,10 +60,3 @@ jobs:
           asset_content_type: application/rpm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  cleanup:
-    runs-on: ubuntu-24.04
-    needs: upload
-    steps:
-      - uses: geekyeggo/delete-artifact@v5
-        with:
-          name: artifacts
