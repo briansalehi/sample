@@ -4,26 +4,43 @@ on:
     tags:
       - v*
 jobs:
-  release:
-    name: Release
+  checkout:
+    name: Checkout
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+  build:
+    name: Build
+    runs-on: ubuntu-24.04
+    needs: checkout
+    steps:
       - name: Configure
         run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
       - name: Build
         run: cmake --build build
+  package:
+    runs-on: ubuntu-24.04
+    needs: build
+    steps:
       - name: Zip Package
         run: cpack -G ZIP --config build/CPackConfig.cmake
       - name: Debian Package
         run: cpack -G DEB --config build/CPackConfig.cmake
       - name: RPM Package
         run: cpack -G RPM --config build/CPackConfig.cmake
-      - name: PWD
-        run: pwd
+  verify:
+    runs-on: ubuntu-24.04
+    needs: package
+    steps:
+      - name: Verify Package Content
+        run: |
+          zip --show-files build/Packages/*.zip
+  release:
+    runs-on: ubuntu-24.04
+    needs: package
+    steps:
       - name: Create Release
-        id: create_release
+        id: create-release
         uses: actions/create-release@v1
         with:
           tag_name: ${{ github.ref_name }}
@@ -32,31 +49,35 @@ jobs:
           draft: false
           prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
-      - name: Upload ZIP
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  upload:
+    runs-on: ubuntu-24.04
+    needs: release
+    steps:
+      - name: Upload ZIP Package
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
           asset_path: build/Packages/Sample.zip
           asset_name: Sample.zip
           asset_content_type: application/zip
         env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
-      - name: Upload DEB
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload DEB Package
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
           asset_path: build/Packages/Sample.deb
           asset_name: Sample.deb
           asset_content_type: application/deb
         env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
-      - name: Upload RPM
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload RPM Package
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
           asset_path: build/Packages/Sample.rpm
           asset_name: Sample.rpm
           asset_content_type: application/rpm
         env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
